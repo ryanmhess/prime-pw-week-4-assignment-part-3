@@ -45,7 +45,9 @@ function empty(array){
     }   //  end else if
     else{
         console.log('Invalid Entry.  Please Try Again');
-        empty();
+        console.log(' ');
+        empty(array);
+        return '';
     }   //  end else & restart funcion
 }   //  end empty function
 
@@ -57,6 +59,7 @@ console.log(addItem('apples'));
 console.log(addItem('steak'));
 console.log(addItem('string cheese'));
 console.log(addItem('chips'));
+console.log(' ');
 
 console.log(listItems(basket));
 
