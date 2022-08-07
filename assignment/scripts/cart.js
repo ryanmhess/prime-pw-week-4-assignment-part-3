@@ -17,8 +17,8 @@ let marker = 0;
 function addItem(array){
     console.log(isFull(array, maxItems, marker));
     if(marker === 0){
-        let itemPick = prompt(`[Basket Contents]: ${array}\n\nEnter an item to add to your basket.\n **** Type [ exit ] to end item selection. ****`);
-        if(itemPick === 'exit'){
+        let itemPick = prompt(`[Basket Contents]: ${array}\n\nEnter an item to add to your basket.\n\n**** Type [ stop ] to end item selection. ****`);
+        if(itemPick === 'stop'){
             marker = 1; //  marker at 1 to stop adding items even if under max items
             return '';
         }   //  end if
@@ -59,10 +59,6 @@ function anotherItem(array){
 
 //--------------------------------------------------------------------------------//
 
-
-
-//--------------------------------------------------------------------------------//
-
 function listItems(array){
     console.log('\nThe items in your basket include:');
     for(let i=0; i<array.length; i++){
@@ -74,25 +70,73 @@ function listItems(array){
 //--------------------------------------------------------------------------------//
 
 function empty(array){
-    let itemReset = prompt(`[Basket Contents]: ${array}\n\nWould you like to reset your basket?  [ yes ] / [ no ]\n`);
+    let itemReset = prompt(`[Basket Contents]: ${array}\n\nWould you like to remove items from your basket?  [ yes ] / [ no ]\n`);
     if(itemReset === 'yes'){
-        array = []; //  removes all items in basket
-        console.log('Your basket is now empty.');
-        console.log('Basket:', array);
+        console.log(removeItem(array));
         return '';
     }   //  end if
-    else if(itemReset === 'no'){
-        console.log('No changes made to your basket.');
+    else if(itemReset === 'no'){    //  no more changes, ends shopping
+        console.log(listItems(array));
+        console.log('\nThank you for shopping!');
         console.log('Basket:', array);
         return '';
     }   //  end else if
-    else{
+    else{   //  invalid prompt input
         console.log('Invalid Entry. Please Try Again');
         console.log(' ');
         empty(array);
         return '';
     }   //  end else & restart funcion
 }   //  end empty function
+
+//--------------------------------------------------------------------------------//
+
+function removeItem(array){
+    let removeChoice = prompt(`[Basket Contents]: ${array}\n\nWould you like to remove [ 1 ] or [ all ] item(s)?\n\n**** Type [ stop ] to end item removal. ****\n**** Type [ add ] to add items. ****`);
+    if(removeChoice === '1'){
+        let removeSelect = prompt(`[Basket Contents]: ${array}\n\nEnter item to remove:`);
+        if(array.indexOf(removeSelect) >=0){    //  removes designated item from basket
+            console.log(`\nRemoved [${array[array.indexOf(removeSelect)]}] from your basket.`);
+            array.splice(array.indexOf(removeSelect), 1);
+            removeItem(array);
+            return '';
+        }   //  end if
+        else{   //  invalid prompt input
+            console.log('Invalid Entry. Please Try Again');
+            console.log(' ');
+            removeItem(array);
+            return '';
+        }   //  end else
+        return '';
+    }   //  end if
+    else if(removeChoice === 'all'){    //  removes all items and allows you to add new
+        array = [];
+        marker = 0;
+        console.log('Your basket is now empty.');
+        console.log('Basket:', array);
+        console.log(anotherItem(array));
+        console.log(empty(array));
+        return '';
+    }   //  end else if
+    else if(removeChoice === 'stop'){   //  ends shopping
+        console.log(listItems(array));
+        console.log('\nThank you for shopping!');
+        console.log('Basket:', array);
+        return '';
+    }   //  end else if
+    else if(removeChoice === 'add'){    //  lets you add more items if basket not full
+        marker = 0;
+        console.log(anotherItem(array));
+        console.log(empty(array));
+        return '';
+    }   //  end else if
+    else{   //  not a valid prompt input
+        console.log('Invalid Entry. Please Try Again');
+        console.log(' ');
+        removeItem(array);
+        return '';
+    }   //  end else & restart funcion
+}   //  end removeItem function
 
 ////////////////////////////////////////////////////////////////////////////////////
 //                              TEST COMMANDS                                     //
@@ -108,4 +152,5 @@ console.log(listItems(basket));
 //  just list items in basket
 
 console.log(empty(basket));
-//  tbd
+//  asks if you want to remove items, if no, ends shopping
+//  if yes, asks to remove 1 or all items. allows user to add items if they removed some
