@@ -9,7 +9,6 @@ console.log('***** Cart Functions *****');
 let basket = ['orange'];
 const maxItems = 5;
 let marker = 0;
-let check = true;
 
 ////////////////////////////////////////////////////////////////////////////////////
 //                                  FUNCTIONS                                     //
@@ -18,13 +17,19 @@ let check = true;
 function addItem(array){
     console.log(isFull(array, maxItems, marker));
     if(marker === 0){
-        let itemPick = prompt(`[Basket Contents]: ${array}\n\nEnter an item to add to your basket.\n`)
-        console.log(`\nAdding [${itemPick}] to your basket.`);
-        array.push(itemPick);  //  adding item to the basket
-        return true;
+        let itemPick = prompt(`[Basket Contents]: ${array}\n\nEnter an item to add to your basket.\n **** Type [ exit ] to end item selection. ****`);
+        if(itemPick === 'exit'){
+            marker = 1; //  marker at 1 to stop adding items even if under max items
+            return '';
+        }   //  end if
+        else{
+            console.log(`\nAdding [${itemPick}] to your basket.`);
+            array.push(itemPick);  //  adding item to the basket
+            return true;
+        }   //  end else
     }   //  end if
     else{
-        return false;
+        return '';
     }   //  end else
 }   //  end addItem function
 
@@ -49,6 +54,7 @@ function anotherItem(array){
     while(marker === 0){   //  allows you to add more items while basket not full
         console.log(addItem(array));
     }   //  end while
+    return '';
 }   //  end anotherItem function
 
 //--------------------------------------------------------------------------------//
